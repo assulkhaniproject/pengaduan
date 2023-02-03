@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PengaduanResource\Pages;
+use App\Filament\Resources\PengaduanResource\Pages\EditPengaduan;
 use App\Filament\Resources\PengaduanResource\RelationManagers;
 use App\Models\Pengaduan;
 use Filament\Forms;
@@ -21,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,7 +66,9 @@ class PengaduanResource extends Resource
                             'menunggu' => 'Menunggu',
                             'proses' => 'Proses',
                             'selesai' => 'Selesai',
-                        ]),
+                        ])->default('menunggu')
+                        
+                        ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan ),
                 ]),
                 Hidden::make('user_id')->default(auth()->id()),
             ]);
@@ -109,6 +113,14 @@ class PengaduanResource extends Resource
                                 ->extraAttributes([
                                     'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                                 ]),
+                            // SelectColumn::make('status')
+                            //     ->options([
+                            //         'menunggu' => 'Menunggu',
+                            //         'proses' => 'Proses',
+                            //         'selesai' => 'Selesai',
+                            //     ])->extraAttributes([
+                            //         'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
+                            //     ]),
                             BadgeColumn::make('status')
                                 ->colors([
                                     'primary',

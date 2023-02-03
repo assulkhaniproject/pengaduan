@@ -17,6 +17,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use XliteDev\FilamentImpersonate\Tables\Actions\ImpersonateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\Layout\Panel;
@@ -135,7 +136,8 @@ class UserResource extends Resource
             ])
             ->actions([
                 EditAction::make()->iconButton(),
-                DeleteAction::make()->iconButton()
+                DeleteAction::make()->iconButton(),
+                ImpersonateAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
