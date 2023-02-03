@@ -61,12 +61,7 @@ class PengaduanResource extends Resource
                             Forms\Components\TextInput::make('name')
                                 ->required(),
                         ]),
-                    Select::make('status')
-                        ->options([
-                            'menunggu' => 'Menunggu',
-                            'proses' => 'Proses',
-                            'selesai' => 'Selesai',
-                        ])->default('menunggu')
+                    Select::make('status_id')->relationship('status', 'name')
                         
                         ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan ),
                 ]),
@@ -121,13 +116,14 @@ class PengaduanResource extends Resource
                             //     ])->extraAttributes([
                             //         'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                             //     ]),
-                            BadgeColumn::make('status')
+                            // TextColumn::make('status_id'),
+                            BadgeColumn::make('status_id')
                                 ->colors([
                                     'primary',
-                                    'secondary' => static fn ($state): bool => $state === 'menunggu',
-                                    'warning' => static fn ($state): bool => $state === 'proses',
-                                    'success' => static fn ($state): bool => $state === 'selesai',
-                                    // 'danger' => static fn ($state): bool => $state === 'rejected',
+                                    'secondary' => static fn ($state): bool => $state === '1',
+                                    'warning' => static fn ($state): bool => $state === '2',
+                                    'success' => static fn ($state): bool => $state === '3',
+                                    'danger' => static fn ($state): bool => $state === '4',
                                 ])->alignRight()
                                 ->extraAttributes([
                                     'class' => 'mt-2 text-gray-500 dark:text-gray-300 text-xs'

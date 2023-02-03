@@ -19,10 +19,15 @@ class Pengaduan extends Model
         'category_id',
         'user_id',
         'status',
+        'status_id'
     ];
 
     public function categories()
     {
         return $this->belongsTo(Categories::class, 'category_id');
+    }
+    public function status()
+    {
+        return $this->belongsTo(StatusPengaduan::class);
     }
 }
