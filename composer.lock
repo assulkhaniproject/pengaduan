@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bba8ffc99700edd3f48b380f53500a4b",
+    "content-hash": "a8d8f66c9db4e02e6745770528ab5bdb",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -3106,6 +3106,54 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.3"
             },
             "time": "2023-01-16T22:05:37+00:00"
+        },
+        {
+            "name": "nuhel/filament-cropper",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nuhel/filament-cropper.git",
+                "reference": "53c4ef5d78b6e8850f2193789c63271f5fa764f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nuhel/filament-cropper/zipball/53c4ef5d78b6e8850f2193789c63271f5fa764f2",
+                "reference": "53c4ef5d78b6e8850f2193789c63271f5fa764f2",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^2.0",
+                "php": "^8.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Nuhel\\FilamentCropper\\FilamentCropperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nuhel\\FilamentCropper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuhel",
+                    "email": "nuheljft@gmail.com"
+                }
+            ],
+            "description": "Cropper Js Implementation for Filament",
+            "support": {
+                "issues": "https://github.com/Nuhel/filament-cropper/issues",
+                "source": "https://github.com/Nuhel/filament-cropper/tree/1.1.1"
+            },
+            "time": "2023-01-08T18:28:31+00:00"
         },
         {
             "name": "nunomaduro/termwind",
