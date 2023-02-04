@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PengaduanResource\Pages;
 use App\Filament\Resources\PengaduanResource\Pages\EditPengaduan;
+use App\Filament\Resources\PengaduanResource\Pages\ViewPengaduan;
 use App\Filament\Resources\PengaduanResource\RelationManagers;
 use App\Models\Pengaduan;
+use App\Models\StatusPengaduan;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Modal\Actions\Action;
 use Filament\Forms\Components\FileUpload;
@@ -21,6 +23,7 @@ use Filament\Tables\Columns\Layout\Grid as LayoutGrid;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\SelectColumn;
@@ -29,6 +32,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\Placeholder;
+use Symfony\Component\Console\Descriptor\Descriptor;
 
 class PengaduanResource extends Resource
 {
@@ -45,8 +50,10 @@ class PengaduanResource extends Resource
         return $form
             ->schema([
                 Section::make('Photo')->schema([
-                    FileUpload::make('photo')->multiple()->enableDownload()
-                        ->enableOpen(),
+                    FileUpload::make('photo')
+                    ->multiple()
+                    ->enableDownload()
+                    ->enableOpen(),
                 ]),
                 Section::make('Detail Pengaduan')->schema([
                     TextInput::make('title'),
@@ -58,18 +65,29 @@ class PengaduanResource extends Resource
                         ])->required(),
                     Select::make('category_id')
                         ->relationship('categories', 'name')
-                        ->createOptionForm([
-                            Forms\Components\TextInput::make('name')
-                                ->required(),
-                        ]),
-                    Select::make('status_id')->relationship('statuses', 'name')
-                        ->createOptionForm([
-                            Forms\Components\TextInput::make('name')
-                                ->required(),
-                        ])
-                        ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan),
+                        // ->createOptionForm([
+                        //     Forms\Components\TextInput::make('name')
+                        //         ->required(),
+                        // ]),  
                 ]),
+                Section::make('Tindakan')->schema([
+                    Select::make('status')
+                    ->options([
+                        'waiting' => 'Belum Direspon',
+                        'progress' => 'Dalam Proses',
+                        'done' => 'Selesai',
+                        'rejected' => 'Ditolak'
+                    ])->default('waiting'),
+                                RichEditor::make('notes')->label('Notes')
+                                ->placeholder('')
+                                ->toolbarButtons([
+                                    'attachFiles', 'blockquote', 'bold', 'bulletList', 'codeBlock',
+                                    'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'strike', 'undo',
+                                ])
+                                ])
+                        ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan),
                 Hidden::make('user_id')->default(auth()->id()),
+                
             ]);
     }
 
@@ -116,11 +134,26 @@ class PengaduanResource extends Resource
                             //     ->extraAttributes([
                             //         'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                             //     ]),
-                            TextColumn::make('statuses.name')
-                                ->extraAttributes(['class' => 'mt-2 text-primary-50 text-xs text-right italic'])
-                        ])
+                            BadgeColumn::make('status')->alignRight()
+                            ->colors([
+                                'secondary' => 'waiting',
+                                'warning' => 'progress',
+                                'success' => 'done',
+                                'danger' => 'rejected',
+                            ]) ->extraAttributes(['class' => 'mt-2 text-primary-50 text-xs text-right italic']),
+                            // TextColumn::make('statuses.name')
+                            //     ->extraAttributes(['class' => 'mt-2 text-primary-50 text-xs text-right italic'])
+                            ]),
+                        ]),
                     ]),
-                ])
+                        Panel::make([
+                            Tables\Columns\TextColumn::make('notes')->sortable()
+                                ->icon('heroicon-s-document')
+                                ->label('Notes')
+                                ->extraAttributes([
+                                    'class' => 'text-grey-300 dark:text-grey-300 text-xs text-justify italic'
+                                ])->html()->tooltip('Notes'),
+                        ])->collapsible(),
             ])->defaultSort('created_at', 'desc')->contentGrid([
                 'sm' => 1,
                 'md' => 2,
@@ -134,15 +167,30 @@ class PengaduanResource extends Resource
                     '2' => 'Proses',
                     '3' => 'Selesai',
                 ])
+                // ->default('1')
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->label('Tindakan'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()->iconButton(),
                     Tables\Actions\DeleteAction::make()->iconButton(),
-                    // Action::make('status_id')
-                ])
-
+                ]),
+                // Tables\Actions\Action::make('proses')
+                //     ->action(function (array $data, Model $record): void {
+                //         // dd($data);
+                //         $status = $record->statuses();
+                        
+                //         // $status = '';
+                //         $record->status = $status;
+                //         $record->update();
+                //         $data['user_id'] = \auth()->user()->id;
+                //         $record->notes()->create($data);
+                //     })
+                //     ->form([
+                //         Select::make('status_id')
+                //         ->options(StatusPengaduan::all()->pluck('name', 'id')),
+                //         Forms\Components\Textarea::make('notes'),
+                //     ])
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

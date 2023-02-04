@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notes_pengaduan', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('pengaduan_id');
-            $table->foreignId('user_id');
-            $table->text('notes')->nullable();
-            $table->string('tindakan')->nullable();
-            $table->timestamps();
+        Schema::table('pengaduans', function (Blueprint $table) {
+            $table->longText('notes')->nullable();
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes_pengaduan');
+        Schema::table('pengaduans', function (Blueprint $table) {
+            //
+        });
     }
 };

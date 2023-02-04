@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pengaduan extends Model
 {
@@ -19,15 +20,11 @@ class Pengaduan extends Model
         'category_id',
         'user_id',
         'status',
-        'status_id'
+        'notes'
     ];
 
     public function categories()
     {
         return $this->belongsTo(Categories::class, 'category_id');
-    }
-    public function statuses()
-    {
-        return $this->belongsTo(StatusPengaduan::class, 'status_id');
     }
 }

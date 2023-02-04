@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('pengaduans', function (Blueprint $table) {
-            $table->string('status_id');
+        Schema::create('notes_complaints', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('pengaduan_id');
+            $table->foreignId('user_id');
+            $table->text('notes')->nullable();
+            $table->string('tindakan')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('pengaduans', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('notes_complaints');
     }
 };
