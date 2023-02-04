@@ -26,8 +26,8 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(Categories::class, 'category_id');
     }
-    public function status()
+    public function statuses()
     {
-        return $this->belongsTo(StatusPengaduan::class);
+        return $this->belongsTo(StatusPengaduan::class, 'status_id');
     }
 }

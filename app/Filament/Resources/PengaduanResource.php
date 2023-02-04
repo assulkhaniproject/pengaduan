@@ -7,6 +7,7 @@ use App\Filament\Resources\PengaduanResource\Pages\EditPengaduan;
 use App\Filament\Resources\PengaduanResource\RelationManagers;
 use App\Models\Pengaduan;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Modal\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
@@ -61,9 +62,12 @@ class PengaduanResource extends Resource
                             Forms\Components\TextInput::make('name')
                                 ->required(),
                         ]),
-                    Select::make('status_id')->relationship('status', 'name')
-                        
-                        ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan ),
+                    Select::make('status_id')->relationship('statuses', 'name')
+                        ->createOptionForm([
+                            Forms\Components\TextInput::make('name')
+                                ->required(),
+                        ])
+                        ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan),
                 ]),
                 Hidden::make('user_id')->default(auth()->id()),
             ]);
@@ -108,26 +112,12 @@ class PengaduanResource extends Resource
                                 ->extraAttributes([
                                     'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                                 ]),
-                            // SelectColumn::make('status')
-                            //     ->options([
-                            //         'menunggu' => 'Menunggu',
-                            //         'proses' => 'Proses',
-                            //         'selesai' => 'Selesai',
-                            //     ])->extraAttributes([
+                            // TextColumn::make('categories.name')
+                            //     ->extraAttributes([
                             //         'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                             //     ]),
-                            // TextColumn::make('status_id'),
-                            BadgeColumn::make('status_id')
-                                ->colors([
-                                    'primary',
-                                    'secondary' => static fn ($state): bool => $state === '1',
-                                    'warning' => static fn ($state): bool => $state === '2',
-                                    'success' => static fn ($state): bool => $state === '3',
-                                    'danger' => static fn ($state): bool => $state === '4',
-                                ])->alignRight()
-                                ->extraAttributes([
-                                    'class' => 'mt-2 text-gray-500 dark:text-gray-300 text-xs'
-                                ]),
+                            TextColumn::make('statuses.name')
+                                ->extraAttributes(['class' => 'mt-2 text-primary-50 text-xs text-right italic'])
                         ])
                     ]),
                 ])
@@ -139,15 +129,20 @@ class PengaduanResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('category_id')->relationship('categories', 'name'),
-                SelectFilter::make('status')->options([
-                    'menunggu' => 'Menunggu',
-                    'proses' => 'Proses',
-                    'selesai' => 'Selesai',
+                SelectFilter::make('status_id')->options([
+                    '1' => 'Menunggu',
+                    '2' => 'Proses',
+                    '3' => 'Selesai',
                 ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->iconButton(),
-                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()->iconButton(),
+                    Tables\Actions\DeleteAction::make()->iconButton(),
+                    // Action::make('status_id')
+                ])
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
