@@ -50,12 +50,12 @@
                     <li class="has-submenu parent-menu-item">
                         <a href="javascript:void(0)">Docs</a><span class="menu-arrow"></span>
                         <ul class="submenu">
-                            <li><a href="documentation.html" class="sub-menu-item">Documentation</a></li>
-                            <li><a href="changelog.html" class="sub-menu-item">Changelog</a></li>
-                            <li><a href="widget.html" class="sub-menu-item">Widget</a></li>
+                            <li><a href="/notfound" class="sub-menu-item">Documentation</a></li>
+                            <li><a href="/notfound" class="sub-menu-item">Changelog</a></li>
+                            <li><a href="/notfound" class="sub-menu-item">Widget</a></li>
                         </ul>
                     </li>
-                    <li><a href="#" class="sub-menu-item">Contact</a></li>
+                    <li><a href="/notfound" class="sub-menu-item">Contact</a></li>
                 </ul><!--end navigation menu-->
             </div><!--end navigation-->
         </div><!--end container-->

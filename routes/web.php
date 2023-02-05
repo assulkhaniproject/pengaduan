@@ -19,3 +19,8 @@ use App\Http\Livewire\Frontend\Home;
 // });
 
 Route::get('/', Home::class)->name('home');
+
+Route::get('/notfound', function () {
+    return view('notfound');
+});
+

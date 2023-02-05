@@ -337,11 +337,11 @@
                     <img src="assets/images/blog/01.jpg" alt="">
 
                     <div class="content p-6">
-                        <a href="blog-detail.html" class="title h5 text-lg font-medium hover:text-indigo-600 duration-500 ease-in-out">Design your apps in your own way</a>
+                        <a href="/notfound" class="title h5 text-lg font-medium hover:text-indigo-600 duration-500 ease-in-out">Design your apps in your own way</a>
                         <p class="text-slate-400 mt-3">The phrasal sequence of the is now so that many campaign and benefit</p>
                         
                         <div class="mt-4">
-                            <a href="blog-detail.html" class="btn btn-link font-normal hover:text-indigo-600 after:bg-indigo-600 duration-500 ease-in-out">Read More <i class="uil uil-arrow-right"></i></a>
+                            <a href="/notfound" class="btn btn-link font-normal hover:text-indigo-600 after:bg-indigo-600 duration-500 ease-in-out">Read More <i class="uil uil-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -350,11 +350,11 @@
                     <img src="assets/images/blog/02.jpg" alt="">
 
                     <div class="content p-6">
-                        <a href="blog-detail.html" class="title h5 text-lg font-medium hover:text-indigo-600 duration-500 ease-in-out">How apps is changing the IT world</a>
+                        <a href="/notfound" class="title h5 text-lg font-medium hover:text-indigo-600 duration-500 ease-in-out">How apps is changing the IT world</a>
                         <p class="text-slate-400 mt-3">The phrasal sequence of the is now so that many campaign and benefit</p>
                         
                         <div class="mt-4">
-                            <a href="blog-detail.html" class="btn btn-link font-normal hover:text-indigo-600 after:bg-indigo-600 duration-500 ease-in-out">Read More <i class="uil uil-arrow-right"></i></a>
+                            <a href="/notfound" class="btn btn-link font-normal hover:text-indigo-600 after:bg-indigo-600 duration-500 ease-in-out">Read More <i class="uil uil-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -363,11 +363,11 @@
                     <img src="assets/images/blog/03.jpg" alt="">
 
                     <div class="content p-6">
-                        <a href="blog-detail.html" class="title h5 text-lg font-medium hover:text-indigo-600 duration-500 ease-in-out">Smartest Applications for Business</a>
+                        <a href="/notfound" class="title h5 text-lg font-medium hover:text-indigo-600 duration-500 ease-in-out">Smartest Applications for Business</a>
                         <p class="text-slate-400 mt-3">The phrasal sequence of the is now so that many campaign and benefit</p>
                         
                         <div class="mt-4">
-                            <a href="blog-detail.html" class="btn btn-link font-normal hover:text-indigo-600 after:bg-indigo-600 duration-500 ease-in-out">Read More <i class="uil uil-arrow-right"></i></a>
+                            <a href="/notfound" class="btn btn-link font-normal hover:text-indigo-600 after:bg-indigo-600 duration-500 ease-in-out">Read More <i class="uil uil-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -526,7 +526,7 @@
                 <p class="text-slate-400 max-w-xl mx-auto">Obviously I'm a Web Designer. Experienced with all stages of the development cycle for dynamic web projects.</p>
             
                 <div class="mt-6">
-                    <a href="contact-one.html" class="btn bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-white rounded-md mr-2 mt-2"><i class="uil uil-phone"></i> Contact Me</a>
+                    <a href="/notfound" class="btn bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-white rounded-md mr-2 mt-2"><i class="uil uil-phone"></i> Contact Me</a>
                 </div>
             </div><!--end grid-->
         </div><!--end container-->
