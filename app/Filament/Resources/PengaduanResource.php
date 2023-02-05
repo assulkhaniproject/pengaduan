@@ -43,6 +43,8 @@ class PengaduanResource extends Resource
 
     protected static ?string $navigationLabel = 'Pengaduan';
 
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $navigationIcon = 'heroicon-o-annotation';
 
     public static function form(Form $form): Form
@@ -126,14 +128,16 @@ class PengaduanResource extends Resource
                             ]),
 
                         Split::make([
+                            Stack::make([
                             TextColumn::make('created_at')->sortable()->date()->color('primary')->sortable()
                                 ->extraAttributes([
                                     'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                                 ]),
-                            // TextColumn::make('categories.name')
-                            //     ->extraAttributes([
-                            //         'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
-                            //     ]),
+                            TextColumn::make('categories.name')
+                                ->extraAttributes([
+                                    'class' => 'mt-1 text-gray-300 font-bold dar1:text-gray-300 text-xs'
+                                ]),
+                            ]),
                             BadgeColumn::make('status')->alignRight()
                             ->colors([
                                 'secondary' => 'waiting',
