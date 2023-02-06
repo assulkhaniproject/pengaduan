@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengaduanResource\Pages;
-use App\Filament\Resources\PengaduanResource\Pages\EditPengaduan;
-use App\Filament\Resources\PengaduanResource\Pages\ViewPengaduan;
-use App\Filament\Resources\PengaduanResource\RelationManagers;
-use App\Models\Pengaduan;
-use App\Models\StatusPengaduan;
+use App\Filament\Resources\ComplaintsResource\Pages;
+use App\Filament\Resources\ComplaintsResource\Pages\EditComplaints;
+use App\Filament\Resources\ComplaintsResource\Pages\ViewComplaints;
+use App\Filament\Resources\ComplaintsResource\RelationManagers;
+use App\Models\Complaints;
+use App\Models\StatusComplaints;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Modal\Actions\Action;
 use Filament\Forms\Components\FileUpload;
@@ -35,13 +35,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\Placeholder;
 use Symfony\Component\Console\Descriptor\Descriptor;
 
-class PengaduanResource extends Resource
+class ComplaintsResource extends Resource
 {
-    protected static ?string $model = Pengaduan::class;
+    protected static ?string $model = Complaints::class;
 
-    protected static ?string $navigationGroup = 'Pages';
+    protected static ?string $navigationGroup = 'Complaint';
 
-    protected static ?string $navigationLabel = 'Pengaduan';
+    protected static ?string $navigationLabel = 'Complaints';
 
     protected static ?int $navigationSort = 1;
 
@@ -51,13 +51,13 @@ class PengaduanResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Photo')->schema([
-                    FileUpload::make('photo')
+                Section::make('Images')->schema([
+                    FileUpload::make('images')
                     ->multiple()
                     ->enableDownload()
                     ->enableOpen(),
                 ]),
-                Section::make('Detail Pengaduan')->schema([
+                Section::make('Detail Complaints')->schema([
                     TextInput::make('title'),
                     RichEditor::make('description')->label('Description')
                         ->placeholder('')
@@ -65,21 +65,21 @@ class PengaduanResource extends Resource
                             'attachFiles', 'blockquote', 'bold', 'bulletList', 'codeBlock',
                             'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'strike', 'undo',
                         ])->required(),
-                    Select::make('category_id')
+                    Select::make('category_complaint_id')
                         ->relationship('categories', 'name')
                         // ->createOptionForm([
                         //     Forms\Components\TextInput::make('name')
                         //         ->required(),
-                        // ]),  
+                        // ]),
                 ]),
-                Section::make('Tindakan')->schema([
+                Section::make('Actions')->schema([
                     Select::make('status')
                     ->options([
-                        'waiting' => 'Belum Direspon',
-                        'progress' => 'Dalam Proses',
-                        'done' => 'Selesai',
-                        'rejected' => 'Ditolak'
-                    ])->default('waiting'),
+                        'Waiting' => 'Waiting',
+                        'Approved' => 'Approved',
+                        'Decline' => 'Decline',
+                        'Finish' => 'Finish'
+                    ])->default('Waiting'),
                                 RichEditor::make('notes')->label('Notes')
                                 ->placeholder('')
                                 ->toolbarButtons([
@@ -87,9 +87,9 @@ class PengaduanResource extends Resource
                                     'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'strike', 'undo',
                                 ])
                                 ])
-                        ->visible(fn ($livewire, $get) => $livewire instanceof EditPengaduan),
+                        ->visible(fn ($livewire, $get) => $livewire instanceof EditComplaints),
                 Hidden::make('user_id')->default(auth()->id()),
-                
+
             ]);
     }
 
@@ -103,14 +103,14 @@ class PengaduanResource extends Resource
             ->columns([
                 Stack::make([
                     LayoutGrid::make()->schema([
-                        Tables\Columns\ImageColumn::make('photo')
-                            ->getStateUsing(function (Model $record) {
-                                if ($record->photo) {
-                                    $thumb = $record->photo;
-                                    return $thumb[0];
-                                }
-                                return asset('images/no_image.png');
-                            })
+                        Tables\Columns\ImageColumn::make('images')
+                        ->getStateUsing(function (Model $record) {
+                            if ($record->images) {
+                                $thumb = $record->images;
+                                return $thumb[0];
+                            }
+                            return asset('images/no_image.jpeg');
+                        })
                             ->height('200px')
                             ->extraImgAttributes([
                                 'class' => 'object-cover h-cover rounded-t-xl w-full',
@@ -131,7 +131,7 @@ class PengaduanResource extends Resource
                             Stack::make([
                             TextColumn::make('created_at')->sortable()->date()->color('primary')->sortable()
                                 ->extraAttributes([
-                                    'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
+                                    'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs text-right'
                                 ]),
                             TextColumn::make('categories.name')
                                 ->extraAttributes([
@@ -140,10 +140,10 @@ class PengaduanResource extends Resource
                             ]),
                             BadgeColumn::make('status')->alignRight()
                             ->colors([
-                                'secondary' => 'waiting',
-                                'warning' => 'progress',
-                                'success' => 'done',
-                                'danger' => 'rejected',
+                                'secondary' => 'Waiting',
+                                'warning' => 'Approved',
+                                'success' => 'Finish',
+                                'danger' => 'Decline',
                             ]) ->extraAttributes(['class' => 'mt-2 text-primary-50 text-xs text-right italic']),
                             // TextColumn::make('statuses.name')
                             //     ->extraAttributes(['class' => 'mt-2 text-primary-50 text-xs text-right italic'])
@@ -165,16 +165,22 @@ class PengaduanResource extends Resource
                 '2xl' => 3,
             ])
             ->filters([
-                SelectFilter::make('category_id')->relationship('categories', 'name'),
-                SelectFilter::make('status_id')->options([
-                    '1' => 'Menunggu',
-                    '2' => 'Proses',
-                    '3' => 'Selesai',
-                ])
-                // ->default('1')
+                SelectFilter::make('category_complaint_id')
+                ->label('Category')
+                ->relationship('categories', 'name'),
+                SelectFilter::make('status')
+                ->label('Status')
+                    ->options([
+                        'Waiting' => 'Waiting',
+                        'Approved' => 'Approved',
+                        'Decline' => 'Decline',
+                        'Finish' => 'Finish'
+                    ])
+                    // ->default('Waiting'),
+
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('Tindakan'),
+                Tables\Actions\EditAction::make()->label('Action'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()->iconButton(),
                     Tables\Actions\DeleteAction::make()->iconButton(),
@@ -183,7 +189,7 @@ class PengaduanResource extends Resource
                 //     ->action(function (array $data, Model $record): void {
                 //         // dd($data);
                 //         $status = $record->statuses();
-                        
+
                 //         // $status = '';
                 //         $record->status = $status;
                 //         $record->update();
@@ -192,7 +198,7 @@ class PengaduanResource extends Resource
                 //     })
                 //     ->form([
                 //         Select::make('status_id')
-                //         ->options(StatusPengaduan::all()->pluck('name', 'id')),
+                //         ->options(StatusComplaints::all()->pluck('name', 'id')),
                 //         Forms\Components\Textarea::make('notes'),
                 //     ])
             ])
@@ -211,10 +217,10 @@ class PengaduanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPengaduans::route('/'),
-            'create' => Pages\CreatePengaduan::route('/create'),
-            'edit' => Pages\EditPengaduan::route('/{record}/edit'),
-            'view' => Pages\ViewPengaduan::route('/{record}')
+            'index' => Pages\ListComplaints::route('/'),
+            'create' => Pages\CreateComplaints::route('/create'),
+            'edit' => Pages\EditComplaints::route('/{record}/edit'),
+            'view' => Pages\ViewComplaints::route('/{record}')
         ];
     }
 }

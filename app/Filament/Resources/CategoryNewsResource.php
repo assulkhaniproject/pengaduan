@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Categories;
-use App\Models\Category;
+use App\Filament\Resources\CategoryNewsResource\Pages;
+use App\Filament\Resources\CategoryNewsResource\RelationManagers;
+use App\Models\CategoryNews;
 use Filament\Forms;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -17,13 +15,13 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryResource extends Resource
+class CategoryNewsResource extends Resource
 {
-    protected static ?string $model = Categories::class;
+    protected static ?string $model = CategoryNews::class;
 
-    protected static ?string $navigationGroup = 'Pages';
+    protected static ?string $navigationLabel = 'Category News';
 
-    protected static ?string $navigationLabel = 'Kategori';
+    protected static ?string $navigationGroup = 'News';
 
     protected static ?int $navigationSort = 2;
 
@@ -33,9 +31,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Grid::make()->schema([
-                TextInput::make('name')->label('Category Name')
-                ])->columns(1)
+                TextInput::make('name')
             ]);
     }
 
@@ -43,28 +39,36 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name'),
-                TextColumn::make('created_at')
-                ->sortable()
-                ->date()
-                ->label('Created')
+                TextColumn::make('name'),
+                TextColumn::make('created_at'),
+
             ])
             ->filters([
                 //
-            ])->defaultSort('created_at', 'desc')
+            ])
             ->actions([
                 Tables\Actions\EditAction::make()->iconButton(),
                 Tables\Actions\DeleteAction::make()->iconButton(),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCategories::route('/'),
+            'index' => Pages\ListCategoryNews::route('/'),
+            'create' => Pages\CreateCategoryNews::route('/create'),
+            'edit' => Pages\EditCategoryNews::route('/{record}/edit'),
         ];
-    }    
+    }
 }
