@@ -131,7 +131,7 @@ class ComplaintsResource extends Resource
                             Stack::make([
                             TextColumn::make('created_at')->sortable()->date()->color('primary')->sortable()
                                 ->extraAttributes([
-                                    'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs text-right'
+                                    'class' => 'mt-2 text-primary-500 dark:text-primary-500 text-xs'
                                 ]),
                             TextColumn::make('categories.name')
                                 ->extraAttributes([

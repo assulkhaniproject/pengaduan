@@ -23,7 +23,7 @@ class CategoryComplaintResource extends Resource
 
     protected static ?string $navigationGroup = 'Complaint';
 
-    protected static ?string $navigationLabel = 'Category Complaint';
+    protected static ?string $navigationLabel = 'Category Complaints';
 
     protected static ?int $navigationSort = 2;
 
