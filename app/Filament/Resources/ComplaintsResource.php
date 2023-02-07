@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\Placeholder;
 use Symfony\Component\Console\Descriptor\Descriptor;
+use Heloufir\FilamentLeafLetGeoSearch\Forms\Components\LeafletInput;
 
 class ComplaintsResource extends Resource
 {
@@ -46,6 +47,11 @@ class ComplaintsResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-annotation';
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {
@@ -66,12 +72,20 @@ class ComplaintsResource extends Resource
                             'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'strike', 'undo',
                         ])->required(),
                     Select::make('category_complaint_id')
-                        ->relationship('categories', 'name')
+                        ->relationship('categories', 'name'),
                         // ->createOptionForm([
                         //     Forms\Components\TextInput::make('name')
                         //         ->required(),
                         // ]),
+                        LeafletInput::make('location')
+                        ->setMapHeight(300)
+                        ->setZoomControl(true)
+                        ->setScrollWheelZoom(true)
+                        ->setZoomLevel(10)
+                        ->required(),
+
                 ]),
+
                 Section::make('Actions')->schema([
                     Select::make('status')
                     ->options([
@@ -89,6 +103,7 @@ class ComplaintsResource extends Resource
                                 ])
                         ->visible(fn ($livewire, $get) => $livewire instanceof EditComplaints),
                 Hidden::make('user_id')->default(auth()->id()),
+
 
             ]);
     }
